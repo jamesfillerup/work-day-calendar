@@ -19,7 +19,7 @@
 // 4.2 when clicked the text can't be deleted in the text box
 
 
-
+//1.2 todays date
 var m = moment().format('dddd, MMMM Do');
 // console.log(m.toString());
 
