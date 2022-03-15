@@ -20,7 +20,7 @@
 
 
 //1.2 todays date
-var m = moment().format('dddd, MMMM Do');
+var m = moment().format('dddd, MMMM Do, h:mm');
 // console.log(m.toString());
 
 var todaysDate = document.getElementById("currentDay").innerHTML = m.toString();
@@ -29,21 +29,32 @@ var todaysDate = document.getElementById("currentDay").innerHTML = m.toString();
 
 function textBgColor(){
     //This section of code came from source below
-    var hour = $(".hour").text().trim();
+    var hour = moment().hours();
 
-    var time = moment(hour, "LT")
-    console.log(time);
+    $('.time-block').each(function(){
+        var now = parseInt($(this).attr("id"));
 
-    $(".hour").removeClass(".present .past .future");
+        if(now < hour){
+            $(this).addClass("past");
+        }
+        else if (now === hour){
+            $(this).addClass("present");
+        }
+        else {
+            $(this).addClass("future");
+        }
+    })
+};
+//     $(".hour").removeClass(".present .past .future");
 
-    if(moment().isAfter(time)){
-        $(".hour").addClass("past");
-    }
-    else if (moment().isBefore(time)) {
-        $(".hour").addClass(".future");
-    } else {
-        $(".hour").addClass(".present");
-    }
-}
+//     if(moment().isAfter(time)){
+//         $(".hour").addClass("past");
+//     }
+//     else if (moment().isBefore(time)) {
+//         $(".hour").addClass(".future");
+//     } else {
+//         $(".hour").addClass(".present");
+//     }
+// }
 //Source https://www.codegrepper.com/code-examples/javascript/how+to+use+moment+to+compare+time+for+calendar+change+color
 textBgColor();
