@@ -20,7 +20,7 @@
 
 
 //1.2 todays date
-var m = moment().format('dddd, MMMM Do, h:mm');
+var m = moment().format('dddd, MMMM Do');
 // console.log(m.toString());
 
 var todaysDate = document.getElementById("currentDay").innerHTML = m.toString();
@@ -28,16 +28,17 @@ var todaysDate = document.getElementById("currentDay").innerHTML = m.toString();
 //3.3 text box color changes with the time of day see classes as they have the colors in css
 
 function textBgColor(){
-    //This section of code came from source below
-    var hour = moment().hours();
+    
+    var timeColor = moment().hours();
 
     $('.time-block').each(function(){
+        //it checks the id number in html
         var now = parseInt($(this).attr("id"));
-
-        if(now < hour){
+//this adds class to the textarea by checking it against the id number
+        if(now < timeColor){
             $(this).addClass("past");
         }
-        else if (now === hour){
+        else if (now === timeColor){
             $(this).addClass("present");
         }
         else {
@@ -45,16 +46,37 @@ function textBgColor(){
         }
     })
 };
-//     $(".hour").removeClass(".present .past .future");
 
-//     if(moment().isAfter(time)){
-//         $(".hour").addClass("past");
-//     }
-//     else if (moment().isBefore(time)) {
-//         $(".hour").addClass(".future");
-//     } else {
-//         $(".hour").addClass(".present");
-//     }
-// }
-//Source https://www.codegrepper.com/code-examples/javascript/how+to+use+moment+to+compare+time+for+calendar+change+color
+// 4.2 when clicked the text can't be deleted in the text box 
+
+var saveBtn = document.querySelector(".saveBtn")
+
+function saveText() {
+// this saves the number and text to be on the original row so that tasks and numbers do not change
+    var timeTask = $(this).siblings(".hour").text();
+    var tasks = $(this).siblings(".task").val();
+    console.log($(this));
+
+    localStorage.setItem(timeTask, tasks);
+};
+
+
+// when the page is refreshed it pulls up info from storage
+function refresh() {
+// both hour and task have stored material and will show back up in their proper column and row
+    $(".hour").each(function() {
+        var currText = $(this).text();
+        var taskText = localStorage.getItem(currText);
+
+        if(taskText !== null) {
+            $(this).siblings(".task").val(taskText);
+        }
+    });
+}
+
+
+// //event listeners
+saveBtn.addEventListener("click", saveText);
+
 textBgColor();
+refresh();
